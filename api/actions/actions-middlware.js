@@ -6,7 +6,7 @@ function ensureIdExists(req, res, next) {
         .then(project => {
             if(!project) {
                 res.status(404).json({
-                    message: "Project not found"
+                    message: "Action not found"
                 })
             } else {
                 req.existingId = project;
@@ -44,20 +44,6 @@ function checkforMissingInfo (req, res, next) {
         next();
     }
 }
-/**| project_id  | number    | required, must be the id of an existing project                                                  |
-| description | string    | required, up to 128 characters long                                                              |
-| notes       | string    | required, no size limit. Used to record additional notes or requirements to complete the action  | */
 
-function checkforMissingInfoPut (req, res, next) {
-    const {name, description, completed} = req.body
-    if(!name || name.trim() === "" || !description || description.trim() === "" || typeof completed != 'boolean' ) {
-        res.status(400).json({
-            message: "Please include a valid name, description, and completed status in your post"
-        })
-    } else {
-        req.project = { completed: req.body.completed, name: req.body.name.trim(), description: req.body.description.trim() };
-        next();
-    }
-}
 
-module.exports = { ensureIdExists, checkforMissingInfo, checkforMissingInfoPut, checkProject_Id }
+module.exports = { ensureIdExists, checkforMissingInfo, checkProject_Id }
